@@ -1,0 +1,8 @@
+services:
+  apache:
+    image: ghcr.io/nightmeer/apachephp8:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./apache/config:/config
+      - ./apache/html:/var/www/html
