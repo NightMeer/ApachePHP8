@@ -1,4 +1,26 @@
 FROM php:8-apache
+
+ARG SOFTWARENAME_VER="1.0.0"
+
+LABEL base.image="php:8-apache"
+LABEL dockerfile.version="1"
+LABEL software="Apache PHP8"
+LABEL software.version="${SOFTWARENAME_VER}"
+LABEL description="Apache Webserver with PHP8"
+LABEL website="https://github.com/NightMeer/ApachePHP8"
+LABEL license=""
+LABEL maintainer="NightMeer"
+LABEL maintainer.email="git@nightmeer.de"
+#Github Related
+LABEL org.opencontainers.image.source="https://github.com/NightMeer/ApachePHP8" 
+
+VOLUME ["/config"]
+VOLUME ["/var/www/html"]
+
+EXPOSE 80
+
+WORKDIR /var/www/html
+
 RUN apt-get update && apt-get upgrade -y  \
     && apt-get install -y rsync sendmail libfreetype-dev libjpeg62-turbo-dev libpng-dev libicu-dev zip libzip-dev libpq-dev libgmp-dev\
     && docker-php-ext-configure intl && docker-php-ext-install intl \
@@ -13,14 +35,8 @@ RUN apt-get update && apt-get upgrade -y  \
     && docker-php-ext-configure gmp && docker-php-ext-install gmp \
     && a2enmod rewrite
 
-EXPOSE 80
-
-WORKDIR /var/www/html
-
-VOLUME ["/config"]
-VOLUME ["/var/www/html"]
-
 COPY ./startup.sh /startup.sh
-CMD chmod 777 /startup.sh
+RUN chmod 777 /startup.sh
 
-ENTRYPOINT "/startup.sh"
+ENTRYPOINT ["/bin/sh"]
+CMD ["-c","/startup.sh"]

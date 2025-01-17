@@ -1,9 +1,25 @@
 PHP8 Apache Docker
 
+docker-compose.yml
+```
+services:
+  apache:
+    image: ghcr.io/nightmeer/apachephp8:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./apache/config:/config
+      - ./apache/html:/var/www/html
+
+```
+Docker Start
+```
 docker run --restart unless-stopped -d -p 80:80 -v /HOST/PATH/config/:/config -v /HOST/PATH/config/html:/var/www/html ghcr.io/nightmeer/apachephp8:latest
+```
+
 
 Installed and Loaded PHP Extensions (via get_loaded_extensions())
-
+```
     [0] => Core
     [1] => date
     [2] => libxml
@@ -47,3 +63,4 @@ Installed and Loaded PHP Extensions (via get_loaded_extensions())
     [40] => pgsql
     [41] => sodium
     [42] => zip
+```
